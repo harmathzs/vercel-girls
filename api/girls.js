@@ -16,7 +16,14 @@ export function getCreatedConnection() {
 
 export default async function handler(req, res) {
     let conn = null
-
+    const allowedOrigins = new Set(["http://localhost"])
+    const {origin} = req.headers
+    if (origin && allowedOrigins.has(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin)
+        res.setHeader("Vary", "Origin")
+        res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS")
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type")
+    }
     switch (req.method) {
         case "GET":
             conn = getCreatedConnection()
@@ -32,6 +39,8 @@ export default async function handler(req, res) {
             })
             break
 
+        case "OPTIONS":
+            return res.status(204).end()
     
         default:
             return res.status(405).json({error: "Method Not Allowed"})
