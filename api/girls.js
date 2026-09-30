@@ -22,9 +22,15 @@ export default async function handler(req, res) {
         res.setHeader("Access-Control-Allow-Origin", origin)
         res.setHeader("Vary", "Origin")
         res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS")
-        res.setHeader("Access-Control-Allow-Headers", "Content-Type")
+        res.setHeader(
+            "Access-Control-Allow-Headers",
+            "Content-Type, x-vercel-protection-bypass"
+        )
     }
     switch (req.method) {
+        case "OPTIONS":
+            return res.status(204).end()
+
         case "GET":
             conn = getCreatedConnection()
             conn.query("SELECT * FROM girls", (error, result, fields)=>{
@@ -39,9 +45,6 @@ export default async function handler(req, res) {
             })
             break
 
-        case "OPTIONS":
-            return res.status(204).end()
-    
         default:
             return res.status(405).json({error: "Method Not Allowed"})
     }
