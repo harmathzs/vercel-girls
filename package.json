@@ -9,9 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "packageManager": "pnpm@10.28.0",
   "dependencies": {
     "mysql2": "^3.24.4",
-    "pnpm": "^12.8.1",
+
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
